@@ -107,7 +107,6 @@ static void update_header_append(linked_list * node_to_append)
 		header->first_node = node_to_append;
 
 	header->last_node = node_to_append;
-
 	header->size++;
 }
 
