@@ -70,10 +70,10 @@ size_t list_size_backward(linked_list const * list);
  * @brief - adds a node at the end of the list
  * 	Complexity: O(1)
  *
- * @param list - the list to add a node to
+ * @param list - the list to append a node to
  * @param value - the value to store in the the list
  */
-void list_add(linked_list ** list, void const * value);
+void list_append(linked_list ** list, void const * value);
 
 
 /**

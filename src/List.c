@@ -97,16 +97,16 @@ static void delete_header(header ** header)
 /**
  * @brief - updates the header, setting first/last node and incrementing size
  *
- * @param node_to_remove - the node that will be added
+ * @param node_to_append - the node that will be appended
  */
-static void update_header_add(linked_list * node_to_add)
+static void update_header_append(linked_list * node_to_append)
 {
-	header * header = node_to_add->header;
+	header * header = node_to_append->header;
 
 	if (header->first_node == NULL)
-		header->first_node = node_to_add;
+		header->first_node = node_to_append;
 
-	header->last_node = node_to_add;
+	header->last_node = node_to_append;
 
 	header->size++;
 }
@@ -149,7 +149,7 @@ static linked_list * create_node_and_update_header(
 
 	node->header = header;
 
-	update_header_add(node);
+	update_header_append(node);
 
 	return node;
 }
@@ -268,7 +268,7 @@ size_t list_size_backward(linked_list const * list)
 }
 
 
-void list_add(linked_list ** list, void const * value)
+void list_append(linked_list ** list, void const * value)
 {
 	linked_list * old_last_node;
 	linked_list * new_node;

@@ -30,39 +30,39 @@ Test(linked_list, is_empty_on_creation)
 }
 
 
-Test(linked_list, adding_to_null_has_no_effect)
+Test(linked_list, append_to_null_has_no_effect)
 {
 	// given no list
 	linked_list ** to_nowhere = NULL;
 
-	// when trying to add anything
-	list_add(to_nowhere, "any value");
+	// when trying to append anything
+	list_append(to_nowhere, "any value");
 
 	// then it shouldn't crash
 }
 
 
-Test(linked_list, is_not_empty_after_add)
+Test(linked_list, is_not_empty_after_append)
 {
 	// given an empty list
 	linked_list * list = list_create();
 
-	// when adding a value
-	list_add(& list, "any value");
+	// when appending a value
+	list_append(& list, "any value");
 
 	// then it shouldn't be empty anymore
 	cr_assert_neq(list_size(list), 0, "list is still empty");
 }
 
 
-Test(linked_list, add_increase_lenght_by_1)
+Test(linked_list, append_increase_lenght_by_1)
 {
 	// given a list with a few elements
 	linked_list * list = small_list();
 	size_t previous_size = list_size(list);
 
-	// when adding another one
-	list_add(& list, "foo");
+	// when appending another one
+	list_append(& list, "foo");
 
 	// then the list should have its length increased
 	size_t new_size = list_size(list);
@@ -132,7 +132,7 @@ Test(linked_list, remove_from_list_of_length_1_makes_it_empty)
 {
 	// given a list of 1 element
 	linked_list * list = list_create();
-	list_add(& list, "1");
+	list_append(& list, "1");
 
 	// when removing it
 	list_remove_node(& list);
@@ -204,18 +204,21 @@ Test(linked_list, remove_from_null_has_no_effect)
 }
 
 
-Test(linked_list, values_are_accessed_in_adding_order)
+Test(linked_list, values_are_accessed_in_appending_order)
 {
 	// given a list of 2 elements
 	linked_list * list = list_create();
-	list_add(& list, "first");
-	list_add(& list, "second");
+	list_append(& list, "first");
+	list_append(& list, "second");
 
 	// when accessing the value of the current node
 	void const * actual_value = list_content(list);
 
-	// then it should be the first value added
-	cr_assert_eq(actual_value, "first", "returned value isn't the first added");
+	// then it should be the first value appended
+	cr_assert_eq(
+		actual_value,
+		"first",
+		"returned value isn't the first appended");
 }
 
 
@@ -229,12 +232,12 @@ static void store_values_in_buffer_reducer(
 }
 
 
-Test(linked_list, reduce_applies_to_every_node_in_adding_order)
+Test(linked_list, reduce_applies_to_every_node_in_appending_order)
 {
 	// given a list of 2 elements
 	linked_list * list = list_create();
-	list_add(& list, "1");
-	list_add(& list, "2");
+	list_append(& list, "1");
+	list_append(& list, "2");
 
 	// when applying a callback to its nodes
 	char callback_buffer[3] = { 0 };
@@ -243,11 +246,11 @@ Test(linked_list, reduce_applies_to_every_node_in_adding_order)
 		callback_buffer,
 		store_values_in_buffer_reducer);
 
-	// then it should have accessed each node in adding order
+	// then it should have accessed each node in appending order
 	cr_assert_str_eq(
 		"12",
 		reduced,
-		"not all nodes have been visited in adding order");
+		"not all nodes have been visited in appending order");
 }
 
 
@@ -507,33 +510,33 @@ Test(linked_list, head_is_in_constant_time)
 }
 
 
-static double benchmark_adding_time(linked_list * list, char * value)
+static double benchmark_appending_time(linked_list * list, char * value)
 {
 	clock_t start = clock();
-	list_add(& list, value);
+	list_append(& list, value);
 	clock_t end = clock();
 	return ((double)(end - start)) / CLOCKS_PER_SEC;
 }
 
 
-Test(linked_list, adding_time_doesnt_depend_of_size)
+Test(linked_list, appending_time_doesnt_depend_of_size)
 {
 	// given 2 lists, a small one and a big one
 	linked_list * small = small_list();
 	linked_list * big = big_list();
 
-	// when measuring time it takes to add a new element to the small list...
-	double small_list_adding_time = benchmark_adding_time(small, "foo");
-	// ... and measuring time it takes to add an element to the bigger list
-	double big_list_adding_time = benchmark_adding_time(big, "bar");
+	// when measuring time it takes to append a new element to the small list...
+	double small_list_appending_time = benchmark_appending_time(small, "foo");
+	// ... and measuring time it takes to append an element to the bigger list
+	double big_list_appending_time = benchmark_appending_time(big, "bar");
 
 	// then both time should be close
-	double epsilon = small_list_adding_time;
+	double epsilon = small_list_appending_time;
 	cr_assert_float_eq(
-		small_list_adding_time,
-		big_list_adding_time,
+		small_list_appending_time,
+		big_list_appending_time,
 		epsilon,
-		"adding elements isn't in constant time");
+		"appending elements isn't in constant time");
 }
 
 
