@@ -38,7 +38,7 @@ default: run-tests
 
 rebuild: clean-all run-tests lib
 
-lib: library-regex
+lib: library
 
 .PHONY: run-tests
 run-tests: lib $(TESTS_BINS)
@@ -66,7 +66,7 @@ $(TESTS_BIN_DIR)/%: $(TESTS_OBJ_DIR)/%.o $(TESTS_UTILS_OBJ)
 # Don't delete objects when binaries are made
 .PRECIOUS: $(OBJ_DIR)/%.o $(TESTS_OBJ_DIR)/%.o
 
-library-regex: $(LIB_DIR)/lib$(LIBRARY).so
+library: $(LIB_DIR)/lib$(LIBRARY).so
 $(LIB_DIR)/lib$(LIBRARY).so: $(RELEASE_OBJ)
 	@mkdir -p $(LIB_DIR)/
 	gcc -shared -o $@ $^
