@@ -22,7 +22,7 @@ LD_LIBRARY_PATH=lib/ ./[your program]
 ```
 
 
-## Usage example, with OpenSSL to store random strings
+## 👇 Usage example, with OpenSSL to store random strings
 
 ```C
 #include <math.h>
