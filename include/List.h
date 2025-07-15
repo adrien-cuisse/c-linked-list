@@ -73,7 +73,7 @@ size_t list_size_backward(linked_list const * list);
  * @param list - the list to append a node to
  * @param value - the value to store in the the list
  */
-void list_append(linked_list ** list, void const * value);
+void list_append(linked_list ** list, void * value);
 
 
 /**
@@ -137,7 +137,7 @@ linked_list * list_tail(linked_list const * list);
  *
  * @return void const * - the value stored in the node, NUll if none
  */
-void const * list_content(linked_list const * list);
+void * list_content(linked_list const * list);
 
 
 /**

@@ -38,7 +38,7 @@ struct linked_list
 	/**
 	 * @brief - the value stored in the node
 	 */
-	void const * value;
+	void * value;
 
 	/**
 	 * @brief - the previous node, NULL if none
@@ -72,7 +72,7 @@ static header * create_blank_header(void)
  *
  * @return linked_list * - the created node
  */
-static linked_list * create_headerless_node(void const * value)
+static linked_list * create_headerless_node(void * value)
 {
 	linked_list * list = calloc(1, sizeof(linked_list));
 	if (list != NULL)
@@ -139,7 +139,7 @@ static void update_header_removal(linked_list * node_to_remove)
  * @return linked_list * - the created node
  */
 static linked_list * create_node_and_update_header(
-	void const * value,
+	void * value,
 	header * header)
 {
 	linked_list * node = create_headerless_node(value);
@@ -267,7 +267,7 @@ size_t list_size_backward(linked_list const * list)
 }
 
 
-void list_append(linked_list ** list, void const * value)
+void list_append(linked_list ** list, void * value)
 {
 	linked_list * old_last_node;
 	linked_list * new_node;
@@ -348,7 +348,7 @@ linked_list * list_tail(linked_list const * list)
 }
 
 
-void const * list_content(linked_list const * list)
+void * list_content(linked_list const * list)
 {
 	if (list == NULL)
 		return NULL;
