@@ -7,7 +7,7 @@ Most operations have a complexity of **O(1)**
 
 ## 📦 Building it and checking
 
-```
+```bash
 make lib
 make run-tests
 ```
@@ -121,8 +121,6 @@ linked_list * create_random_strings_list(size_t size)
 
 	return strings;
 }
-
-
 
 void print_random_strings_list(linked_list const * list)
 {
