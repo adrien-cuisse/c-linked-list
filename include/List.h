@@ -2,6 +2,10 @@
 #ifndef LIST_HEADER
 #define LIST_HEADER
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 
 
@@ -168,6 +172,8 @@ void * list_reduce(
 
 
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif
