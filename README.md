@@ -167,7 +167,6 @@ gcc example.c -o example -lm -lcrypto -Llib/ -llist && LD_LIBRARY_PATH=lib/ ./ex
 
 ## 🔮 Functions to come
 
-- list_prepend
 - list_find_first
 - list_find_last
 - list_sort
