@@ -70,6 +70,21 @@ Test(linked_list, append_increase_lenght_by_1)
 }
 
 
+Test(linked_list, append_adds_at_the_end)
+{
+	// given a list with a few elements
+	linked_list * list = small_list();
+	linked_list * old_tail = list_tail(list);
+
+	// when appending another one
+	list_append(& list, "foo");
+
+	// then the last element should be the new one
+	linked_list * new_tail = list_tail(list);
+	cr_assert_neq(old_tail, new_tail, "element wasn't added at the end");
+}
+
+
 Test(linked_list, next_gives_next_node)
 {
 	// given a list
@@ -445,6 +460,61 @@ Test(linked_list, tail_on_null_doesn_crash)
 }
 
 
+Test(linked_list, prepend_to_null)
+{
+	// given no list
+	linked_list ** to_nowhere = NULL;
+
+	// when trying to prepend anything
+	list_prepend(to_nowhere, "any value");
+
+	// then it shouldn't crash
+}
+
+
+Test(linked_list, is_not_empty_after_prepend)
+{
+	// given an empty list
+	linked_list * list = list_create();
+
+	// when prepending a value
+	list_prepend(& list, "any value");
+
+	// then it shouldn't be empty anymore
+	cr_assert_neq(list_size(list), 0, "list is still empty");
+}
+
+
+Test(linked_list, prepend_increase_lenght_by_1)
+{
+	// given a list with a few elements
+	linked_list * list = small_list();
+	size_t previous_size = list_size(list);
+
+	// when prepending another one
+	list_prepend(& list, "foo");
+
+	// then the list should have its length increased
+	size_t new_size = list_size(list);
+	cr_assert_eq(previous_size + 1, new_size, "length wasn't incremented");
+}
+
+
+Test(linked_list, prepend_adds_at_the_beginning)
+{
+	// given a list with a few elements
+	linked_list * list = small_list();
+	linked_list * old_head = list_head(list);
+
+	// when prepending another one
+	list_prepend(& list, "foo");
+
+	// then the first element should be the new one
+	linked_list * new_head = list_head(list);
+	cr_assert_neq(old_head, new_head, "element wasn't added at the beginning");
+}
+
+
 
 
 #ifdef DO_CONSTANT_TIME_BENCHMARK_TESTS
@@ -567,6 +637,36 @@ Test(linked_list, sizing_whole_list_is_in_constant_time)
 		big_list_sizing_time,
 		epsilon,
 		"sizing the list isn't in constant time");
+}
+
+
+static double benchmark_prepending_time(linked_list * list, char * value)
+{
+	clock_t start = clock();
+	list_prepend(& list, value);
+	clock_t end = clock();
+	return ((double)(end - start)) / CLOCKS_PER_SEC;
+}
+
+
+Test(linked_list, prepending_time_doesnt_depend_of_size)
+{
+	// given 2 lists, a small one and a big one
+	linked_list * small = small_list();
+	linked_list * big = big_list();
+
+	// when measuring time it takes to prepend a new element to the small list...
+	double small_list_prepending_time = benchmark_prepending_time(small, "foo");
+	// ... and measuring time it takes to prepend an element to the bigger list
+	double big_list_prepending_time = benchmark_prepending_time(big, "bar");
+
+	// then both time should be close
+	double epsilon = small_list_prepending_time;
+	cr_assert_float_eq(
+		small_list_prepending_time,
+		big_list_prepending_time,
+		epsilon,
+		"prepending elements isn't in constant time");
 }
 
 #endif /* DO_CONSTANT_TIME_BENCHMARK_TESTS */

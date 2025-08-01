@@ -95,7 +95,7 @@ static void delete_header(header ** header)
 
 
 /**
- * @brief - updates the header, setting first/last node and incrementing size
+ * @brief - updates the header, setting last node and incrementing size
  *
  * @param node_to_append - the node that will be appended
  */
@@ -107,6 +107,23 @@ static void update_header_append(linked_list * node_to_append)
 		header->first_node = node_to_append;
 
 	header->last_node = node_to_append;
+	header->size++;
+}
+
+
+/**
+ * @brief - updates the header, setting first node and incrementing size
+ *
+ * @param node_to_append - the node that will be prepended
+ */
+static void update_header_prepend(linked_list * node_to_prepend)
+{
+	header * header = node_to_prepend->header;
+
+	if (header->last_node == NULL)
+		header->last_node = node_to_prepend;
+
+	header->first_node = node_to_prepend;
 	header->size++;
 }
 
@@ -130,7 +147,7 @@ static void update_header_removal(linked_list * node_to_remove)
 
 
 /**
- * @brief - creates a node to be bound with the given header and returns it
+ * @brief - creates a node to be bound with the given header and returns it,
  * 	the header to be bound will be updated
  *
  * @param value - the value to store in the node
@@ -138,7 +155,7 @@ static void update_header_removal(linked_list * node_to_remove)
  *
  * @return linked_list * - the created node
  */
-static linked_list * create_node_and_update_header(
+static linked_list * create_node_and_update_header_append(
 	void * value,
 	header * header)
 {
@@ -149,6 +166,31 @@ static linked_list * create_node_and_update_header(
 	node->header = header;
 
 	update_header_append(node);
+
+	return node;
+}
+
+
+/**
+ * @brief - creates a node to be bound with the given header and returns it,
+ * 	the header to be bound will be updated
+ *
+ * @param value - the value to store in the node
+ * @param header - the header to bind and update
+ *
+ * @return linked_list * - the created node
+ */
+static linked_list * create_node_and_update_header_prepend(
+	void * value,
+	header * header)
+{
+	linked_list * node = create_headerless_node(value);
+	if (node == NULL)
+		return NULL;
+
+	node->header = header;
+
+	update_header_prepend(node);
 
 	return node;
 }
@@ -269,8 +311,8 @@ size_t list_size_backward(linked_list const * list)
 
 void list_append(linked_list ** list, void * value)
 {
-	linked_list * old_last_node;
-	linked_list * new_node;
+	linked_list * old_tail;
+	linked_list * new_tail;
 	header * header;
 
 	if (list == NULL)
@@ -278,15 +320,42 @@ void list_append(linked_list ** list, void * value)
 
 	if (* list == NULL)
 	{
-		* list = create_node_and_update_header(value, create_blank_header());
+		* list = create_node_and_update_header_append(
+			value,
+			create_blank_header());
 		return;
 	}
 
 	header = (* list)->header;
 
-	old_last_node = header->last_node;
-	new_node = create_node_and_update_header(value, header);
-	link_nodes(old_last_node, new_node);
+	old_tail = header->last_node;
+	new_tail = create_node_and_update_header_append(value, header);
+	link_nodes(old_tail, new_tail);
+}
+
+
+void list_prepend(linked_list ** list, void * value)
+{
+	linked_list * old_head;
+	linked_list * new_head;
+	header * header;
+
+	if (list == NULL)
+		return;
+
+	if (* list == NULL)
+	{
+		* list = create_node_and_update_header_prepend(
+			value,
+			create_blank_header());
+		return;
+	}
+
+	header = (* list)->header;
+
+	old_head = header->first_node;
+	new_head = create_node_and_update_header_prepend(value, header);
+	link_nodes(old_head, new_head);
 }
 
 

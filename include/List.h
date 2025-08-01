@@ -77,6 +77,16 @@ void list_append(linked_list ** list, void * value);
 
 
 /**
+ * @brief - adds a node at the beginning of the list
+ * 	Complexity: O(1)
+ *
+ * @param list - the list to prepend a node to
+ * @param value - the value to store in the the list
+ */
+void list_prepend(linked_list ** list, void * value);
+
+
+/**
  * @brief - removes the given node from the list
  * 	Complexity: O(1)
  *
